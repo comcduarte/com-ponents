@@ -1,0 +1,16 @@
+<div class="card mb-4">
+<?php
+$this->form->prepare();
+echo $this->form()->openTag($form);
+?>
+	<div class="card-header d-flex justify-content-between">
+		<div>
+			<b>Add New Record</b>
+		</div>
+	</div>
+	
+	<div class="card-body">
+		<?php echo $this->formCollection($this->form); ?>
+	</div>
+<?php echo $this->form()->closeTag($this->form); ?>
+</div> 

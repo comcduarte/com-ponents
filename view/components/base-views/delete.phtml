@@ -1,0 +1,22 @@
+<div class="card mb-4">
+<?php
+$this->form->prepare();
+echo $this->form()->openTag($form);
+?>
+	<div class="card-header d-flex justify-content-between">
+		<div>
+			<b>Delete Record</b>
+		</div>
+	</div>
+	
+	<div class="card-body">
+		<div class="form_element">
+            <?= $this->formRow($form->get($this->primary_key)) ?>
+        </div>
+        <div class="form_element">
+            <input type="submit" class="btn btn-danger" name="del" value="Yes" />
+    		<input type="submit" class="btn btn-success" name="del" value="No" />
+        </div>
+	</div>
+<?php echo $this->form()->closeTag($this->form); ?>
+</div> 

@@ -1,0 +1,192 @@
+<?php 
+namespace Components\Controller;
+
+use Laminas\Db\Adapter\AdapterAwareTrait;
+use Laminas\Db\Sql\Where;
+use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\View\Model\ViewModel;
+
+abstract class AbstractBaseController extends AbstractActionController
+{
+    use AdapterAwareTrait;
+    
+    public $model;
+    public $form;
+    
+    public function indexAction()
+    {
+        $view = new ViewModel();
+        $view->setTemplate('base/index');
+        
+        $records = $this->model->fetchAll(new Where());
+        $header = [];
+        
+        if (!empty($records)) {
+            $header = array_keys($records[0]);
+        }
+        
+        $view->setvariables ([
+            'data' => $records,
+            'header' => $header,
+            'primary_key' => $this->model->getPrimaryKey(),
+        ]);
+        return $view;
+    }
+    
+    public function createAction()
+    {
+        $view = new ViewModel();
+        $view->setTemplate('base/create');
+        
+        $request = $this->getRequest();
+        $this->form->bind($this->model);
+        
+        if ($request->isPost()) {
+            $post = array_merge_recursive(
+                $request->getPost()->toArray(),
+                $request->getFiles()->toArray()
+                );
+            
+            $this->form->setData($post);
+            
+            if ($this->form->isValid()) {
+                $this->model->create();
+                
+                $this->flashmessenger()->addSuccessMessage('Add New Record Successful');
+            } else {
+                foreach ($this->form->getMessages() as $message) {
+                    if (is_array($message)) {
+                        $message = array_pop($message);
+                    }
+                    $this->flashMessenger()->addErrorMessage($message);
+                }
+            }
+            
+            $route = $this->getEvent()->getRouteMatch()->getMatchedRouteName();
+            $primary_key = $this->model->getPrimaryKey();
+            return $this->redirect()->toRoute($route, ['action' => 'update', 'uuid' => $this->model->UUID]);
+        }
+        
+        $view->setVariables([
+            'form' => $this->form,
+            'title' => 'Add New Record',
+        ]);
+        
+        return ($view);
+    }
+    
+    public function updateAction()
+    {
+        $primary_key = $this->params()->fromRoute(strtolower($this->model->getPrimaryKey()),0);
+        if (!$primary_key) {
+            $this->flashmessenger()->addErrorMessage("Unable to retrieve record. Value not passed.");
+            
+            $url = $this->getRequest()->getHeader('Referer')->getUri();
+            return $this->redirect()->toUrl($url);
+        }
+        
+        $view = new ViewModel();
+        $view->setTemplate('base/update');
+        
+        $this->model->read([$this->model->getPrimaryKey() => $primary_key]);
+        
+        $this->form->bind($this->model);
+        
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $data = array_merge_recursive(
+                $request->getPost()->toArray(),
+                $request->getFiles()->toArray()
+                );
+            $this->form->setData($data);
+            
+            if ($this->form->isValid()) {
+                $this->model->update();
+                
+                $this->flashmessenger()->addSuccessMessage('Update Successful');
+                
+                $url = $this->getRequest()->getHeader('Referer')->getUri();
+                return $this->redirect()->toUrl($url);
+            } else {
+                foreach ($this->form->getMessages() as $message) {
+                    if (is_array($message)) {
+                        $message = array_pop($message);
+                    }
+                    $this->flashMessenger()->addErrorMessage($message);
+                }
+            }
+        }
+        
+        $view->setVariables([
+            'form' => $this->form,
+            'title' => 'Update Record',
+            'primary_key' => $this->model->getPrimaryKey(),
+        ]);
+        
+        return ($view);
+    }
+    
+    public function deleteAction()
+    {
+        $view = new ViewModel();
+        $view->setTemplate('base/delete');
+        
+        $primary_key = $this->getPrimaryKey();
+        $this->model->read([$this->model->getPrimaryKey() => $primary_key]);
+        $this->form->bind($this->model);
+        
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $del = $request->getPost('del', 'No');
+            
+            if ($del == 'Yes') {
+                $this->model->delete();
+            }
+            
+            $route = $this->getEvent()->getRouteMatch()->getMatchedRouteName();
+            return $this->redirect()->toRoute($route, ['action' => 'index']);
+        }
+        
+        
+        $view->setVariables([
+            'model', $this->model,
+            'form' => $this->form,
+            'primary_key' => $this->model->getPrimaryKey(),
+        ]);
+        return ($view);
+    }
+    
+    public function getModel()
+    {
+        return $this->model;
+    }
+    
+    public function setModel($model)
+    {
+        $this->model = $model;
+        return $this;
+    }
+    
+    public function getForm()
+    {
+        return $this->form;
+    }
+    
+    public function setForm($form)
+    {
+        $this->form = $form;
+        return $this;
+    }
+    
+    private function getPrimaryKey()
+    {
+        $primary_key = $this->params()->fromRoute(strtolower($this->model->getPrimaryKey()),0);
+        if (!$primary_key) {
+            $this->flashmessenger()->addErrorMessage("Unable to retrieve record. Value not passed.");
+            
+            $url = $this->getRequest()->getHeader('Referer')->getUri();
+            return $this->redirect()->toUrl($url);
+        }
+        return $primary_key;
+    }
+}
