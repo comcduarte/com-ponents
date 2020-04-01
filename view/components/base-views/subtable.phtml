@@ -1,0 +1,56 @@
+<div class="card mb-4">
+	<div class="card-header d-flex justify-content-between">
+		<div>
+			<b><?=$this->title?></b>
+		</div>
+		<?php if ($this->form) : ?>
+		<div>
+			<a href="" class="btn btn-primary btn-rounded" data-toggle="modal" data-target="#modal-<?=$this->form['name']?>"><?=$this->form['title']?></a>
+		</div>
+		<?php endif; ?>
+	</div>
+
+	<div class="card-body">
+		<?php if (sizeof($data) === 0) { echo "No Records Retrieved."; } else { ?>
+    	<table class="table table-striped">
+        	<thead>
+        		<tr>
+        	<?php 
+        	   $header = array_keys($this->data[0]); 
+        	   foreach ($header as $key) {
+        	       if (strpos($key, $this->primary_key) === 0 ) { continue; }
+        	       echo "<th>$key</th>";
+        	   }
+           ?>
+           			<th></th>
+        		</tr>
+        	</thead>
+        	<tbody>
+        		<?php foreach ($this->data as $record) : ?>
+        		<tr>
+        			<?php foreach ($record as $key => $value) : ?>
+        				<?php if (strpos($key, $this->primary_key) === 0 ) { continue; } ?>
+        				<td><?php echo $value; ?></td>
+        			<?php endforeach; ?>
+        			<td class="float-right">
+                        <div class="dropdown">
+                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            	<i class="fas fa-bars"></i>
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <?php 
+                            foreach ($this->params as $item) {
+                                $href = $this->url($item['route'], ['action' => $item['action'], strtolower($this->primary_key) => $record[$item['key']]]);
+                                echo "<a class='dropdown-item' href='$href'>" . $item['label'] . "</a>";
+                            }
+                            ?>
+                            </div>
+                        </div>
+        			</td>
+        		</tr>
+        		<?php endforeach; ?>
+        	</tbody>
+    	</table>
+    	<?php } ?>
+	</div>
+</div>

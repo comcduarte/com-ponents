@@ -1,10 +1,10 @@
 <?php
 namespace Components\Form;
 
+use Components\Form\Element\Uuid;
 use Components\Model\AbstractBaseModel;
 use Laminas\Form\Form;
 use Laminas\Form\Element\Csrf;
-use Laminas\Form\Element\Hidden;
 use Laminas\Form\Element\Select;
 use Laminas\Form\Element\Submit;
 
@@ -14,7 +14,7 @@ abstract class AbstractBaseForm extends Form
     {
         $this->add([
             'name' => 'UUID',
-            'type' => Hidden::class,
+            'type' => Uuid::class,
             'attributes' => [
                 'id' => 'UUID',
                 'class' => 'form-control',

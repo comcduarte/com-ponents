@@ -1,0 +1,76 @@
+<?php
+$this->headLink()->prependStylesheet($this->basePath('css/b-flat.css')); 
+?>
+
+<a href="<?=$this->url($this->route, ['action'=>'clear'])?>" class="btn btn-danger">Truncate Database Tables</a>
+<a href="<?=$this->url($this->route, ['action'=>'create'])?>" class="btn btn-primary">Populate Database Tables</a>
+<hr>
+<?php if (!file_exists('./data/files')) { ?>
+	<p>
+    	Files Directory does not Exist
+    	<a href="<?=$this->url($this->route, ['action'=>'createfolders'])?>" class="btn btn-primary">Create Upload Folders</a>
+	</p>
+<?php } else { ?>
+	<p>Files Directory Exists.</p>
+<?php } ?>
+
+<?php 
+/**
+ * Inline Checks
+ */
+$directory_exists = function($dir){if (!file_exists($dir)) {return "";} else {return 'checked=""';}};
+
+/**
+ * Array of Checks
+ */
+$checks = [
+    [
+        'label' => "Directory: ./data/files",
+        'function' => $directory_exists('./data/files'),
+    ],
+    [
+        'label' => "Directory: ./data/cron",
+        'function' => $directory_exists('./data/cron'),
+    ],
+    [
+        'label' => 'Symbolic Link: ./public/data > ./data',
+        'function' => $directory_exists('./public/data/files'),
+    ],
+];
+?>
+
+
+<div class="row">
+	<div class="col">
+		<div class="card mb-4">
+			<div class="card-header d-flex justify-content-between">
+        		<div>
+        			<b>Checks</b>
+        		</div>
+        	</div>
+        	<div class="card-body">
+        		<table class="table table-sm">
+                	<thead>
+                		<tr>
+                			<td>Module One</td>
+                		</tr>
+                	</thead>
+                	<tbody>
+                	<?php foreach ($checks as $check) : ?>
+                		<tr>
+                			<td><?=$check['label']?></td>
+                			<td>
+                                <div class="checkbox checkbox-slider--b-flat">
+                        			<label>
+                        				<input type="checkbox" <?=$check['function']?>><span></span>
+                        			</label>
+                        		</div>
+                			</td>
+                		</tr>
+                	<?php endforeach; ?>
+                	</tbody>
+                </table>
+        	</div>
+		</div>
+	</div>
+</div>
