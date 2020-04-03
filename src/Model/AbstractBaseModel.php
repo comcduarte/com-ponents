@@ -166,6 +166,10 @@ abstract class AbstractBaseModel implements InputFilterAwareInterface
         $date = new \DateTime('now',new \DateTimeZone('EDT'));
         $this->DATE_CREATED = $date->format('Y-m-d H:i:s');
         
+        if (is_null($this->UUID)) {
+            $this->UUID = $this->generate_uuid();
+        }
+        
         $sql = new Sql($this->adapter);
         $values = $this->getArrayCopy();
         
