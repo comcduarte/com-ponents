@@ -2,6 +2,7 @@
 namespace Components\Controller;
 
 use Laminas\Db\Adapter\AdapterAwareTrait;
+use Laminas\Db\Sql\Delete;
 use Laminas\Db\Sql\Sql;
 use Laminas\Db\Sql\Ddl\CreateTable;
 use Laminas\Db\Sql\Ddl\DropTable;
@@ -11,6 +12,9 @@ use Laminas\Db\Sql\Ddl\Column\Varchar;
 use Laminas\Db\Sql\Ddl\Constraint\PrimaryKey;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
+use Exception;
+use Laminas\Validator\Db\RecordExists;
+use Settings\Model\SettingsModel;
 
 abstract class AbstractConfigController extends AbstractActionController
 {
@@ -45,11 +49,28 @@ abstract class AbstractConfigController extends AbstractActionController
     
     public function checkSettingsDatabase()
     {
+        $validator = new RecordExists([
+            'table' => 'settings',
+            'field' => 'MODULE',
+            'adapter' => $this->adapter,
+        ]);
         
+        try {
+            $validator->isValid('INSTALLED');
+            $this->flashMessenger()->addSuccessMessage("Database exists.");
+            return TRUE;
+        } catch (Exception $e) {
+            $this->flashMessenger()->addErrorMessage("Database does not exist.");
+            return FALSE;
+        }
     }
     
     public function createSettingsDatabase()
     {
+        if ($this->checkSettingsDatabase()) {
+            return TRUE;
+        }
+        
         $sql = new Sql($this->adapter);
         
         /******************************
@@ -70,6 +91,15 @@ abstract class AbstractConfigController extends AbstractActionController
         
         $this->adapter->query($sql->buildSqlString($ddl), $this->adapter::QUERY_MODE_EXECUTE);
         unset($ddl);
+        
+        /******************************
+         * Create Default Setting
+         ******************************/
+        $setting = new SettingsModel($this->adapter);
+        $setting->MODULE = 'INSTALLED';
+        $setting->SETTING = 'TRUE';
+        $setting->create();
+        unset ($setting);
     }
     
     public function clearSettingsDatabase()
@@ -86,12 +116,23 @@ abstract class AbstractConfigController extends AbstractActionController
     
     public function createSettings($module)
     {
-        
+        return $this->createSettingsDatabase();
     }
     
     public function clearSettings($module)
     {
+        $sql = new Sql($this->adapter);
         
+        $delete = new Delete();
+        $delete->from('settings')->where(['MODULE' => $module]);
+        $statement = $sql->prepareStatementForSqlObject($delete);
+        
+        try {
+            $statement->execute();
+        } catch (Exception $e) {
+            return FALSE;
+        }
+        return TRUE;
     }
     
     public function getRoute()

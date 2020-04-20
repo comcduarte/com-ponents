@@ -1,6 +1,11 @@
 <?php
 
 return [
+    'acl' => [
+        'admin' => [
+            'settings/default' => [],
+        ],
+    ],
     'view_manager' => [
         'template_map' => [
             'base/index' => __DIR__ . '/../view/components/base-views/index.phtml',
