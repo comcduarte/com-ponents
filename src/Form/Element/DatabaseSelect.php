@@ -37,18 +37,13 @@ class DatabaseSelect extends Select
         $select->from($this->database_table);
         
         
-        $columns = [];
-        $columns[0] = $this->database_id_column;
-        
-        foreach ($this->database_value_columns as $column) {
-            $columns[] = $column;
-        }
-        
+        $columns = $this->database_value_columns;
+        array_unshift ($columns, $this->database_id_column);
         
         $select->columns($columns);
         
         /** ORDER BY the first value column **/
-        $select->order($columns[1]);
+        $select->order(next($columns));
         
         $statement = $sql->prepareStatementForSqlObject($select);
         
@@ -59,7 +54,7 @@ class DatabaseSelect extends Select
         }
         
         $options = [];
-        $options['--- Unassigned ---'] = '--- Unassigned ---';
+        $options[NULL] = '--- Unassigned ---';
         foreach ($resultSet as $object) {
             $id = $object[$this->database_id_column];
             array_shift($object);
