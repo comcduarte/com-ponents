@@ -33,6 +33,7 @@
         				<td><?php echo $value; ?></td>
         			<?php endforeach; ?>
         			<td class="float-right">
+        			<?php if (sizeof($this->params)) : ?>
                         <div class="dropdown">
                             <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             	<i class="fas fa-bars"></i>
@@ -46,6 +47,7 @@
                             ?>
                             </div>
                         </div>
+                    <?php endif; ?>
         			</td>
         		</tr>
         		<?php endforeach; ?>
