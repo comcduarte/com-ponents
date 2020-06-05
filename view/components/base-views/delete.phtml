@@ -3,6 +3,7 @@
 $this->form->prepare();
 echo $this->form()->openTag($form);
 ?>
+	<input type='hidden' name='referring_url' value='<?php echo $this->referring_url; ?>'>
 	<div class="card-header d-flex justify-content-between">
 		<div>
 			<b>Delete Record</b>

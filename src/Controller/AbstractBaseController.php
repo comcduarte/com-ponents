@@ -178,7 +178,7 @@ abstract class AbstractBaseController extends AbstractActionController
         return $this;
     }
     
-    private function getPrimaryKey()
+    public function getPrimaryKey()
     {
         $primary_key = $this->params()->fromRoute(strtolower($this->model->getPrimaryKey()),0);
         if (!$primary_key) {
