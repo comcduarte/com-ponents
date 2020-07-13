@@ -41,7 +41,7 @@
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <?php 
                             foreach ($this->params as $item) {
-                                $href = $this->url($item['route'], ['action' => $item['action'], strtolower($this->primary_key) => $record[$item['key']]]);
+                                $href = $this->url($item['route'], ['action' => $item['action'], strtolower($this->primary_key) => $record[$item['key']]], null, true);
                                 echo "<a class='dropdown-item' href='$href'>" . $item['label'] . "</a>";
                             }
                             ?>
