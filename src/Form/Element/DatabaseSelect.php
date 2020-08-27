@@ -14,6 +14,7 @@ class DatabaseSelect extends Select
     protected $database_table;
     protected $database_id_column;
     protected $database_value_columns;
+    protected $database_object;
     
     public function init()
     {
@@ -33,19 +34,23 @@ class DatabaseSelect extends Select
         
         $sql = new Sql($this->adapter);
         
-        $select = new SqlSelect();
-        $select->from($this->database_table);
+        switch (is_null($this->database_object)) {
+            case FALSE:
+                break;
+            case TRUE:
+            default:
+                /** If object is not passed, create simple select object using factory fields. **/
+                $this->database_object = new SqlSelect();
+                $this->database_object->from($this->database_table);
+                $columns = $this->database_value_columns;
+                array_unshift ($columns, $this->database_id_column);
+                $this->database_object->columns($columns);
+                
+                /** ORDER BY the first value column **/
+                $this->database_object->order(next($columns));
+        }
         
-        
-        $columns = $this->database_value_columns;
-        array_unshift ($columns, $this->database_id_column);
-        
-        $select->columns($columns);
-        
-        /** ORDER BY the first value column **/
-        $select->order(next($columns));
-        
-        $statement = $sql->prepareStatementForSqlObject($select);
+        $statement = $sql->prepareStatementForSqlObject($this->database_object);
         
         try {
             $resultSet = $statement->execute();
@@ -85,6 +90,10 @@ class DatabaseSelect extends Select
             $this->setDbAdapter($options['database_adapter']);
         }
         
+        if (isset($options['database_object'])) {
+            $this->setDatabase_object($options['database_object']);
+        }
+        
         $this->populateElement();
         
         return $this;
@@ -122,4 +131,16 @@ class DatabaseSelect extends Select
         $this->database_value_columns = $database_value_columns;
         return $this;
     }
+    
+    public function getDatabase_object()
+    {
+        return $this->database_object;
+    }
+
+    public function setDatabase_object($database_object)
+    {
+        $this->database_object = $database_object;
+        return $this;
+    }
+
 }
