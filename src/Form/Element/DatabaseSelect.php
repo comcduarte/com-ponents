@@ -68,6 +68,8 @@ class DatabaseSelect extends Select
         }
         
         $this->setValueOptions($options);
+        
+        return $this;
     }
     
     public function setOptions($options)

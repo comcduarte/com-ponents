@@ -1,9 +1,17 @@
 <?php
 
+use Components\Form\Element\AclDatabaseSelect;
+use Components\Form\Element\Factory\AclDatabaseSelectFactory;
+
 return [
     'acl' => [
         'admin' => [
             'settings/default' => [],
+        ],
+    ],
+    'form_elements' => [
+        'factories' => [
+            AclDatabaseSelect::class => AclDatabaseSelectFactory::class,
         ],
     ],
     'view_manager' => [
