@@ -1,7 +1,7 @@
 <?php
 
 use Components\Form\Element\AclDatabaseSelect;
-use Components\Form\Element\Factory\AclDatabaseSelectFactory;
+use Laminas\ServiceManager\Factory\InvokableFactory;
 
 return [
     'acl' => [
@@ -11,7 +11,7 @@ return [
     ],
     'form_elements' => [
         'factories' => [
-            AclDatabaseSelect::class => AclDatabaseSelectFactory::class,
+            AclDatabaseSelect::class => InvokableFactory::class,
         ],
     ],
     'view_manager' => [
