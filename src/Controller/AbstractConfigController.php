@@ -96,8 +96,9 @@ abstract class AbstractConfigController extends AbstractActionController
          * Create Default Setting
          ******************************/
         $setting = new SettingsModel($this->adapter);
-        $setting->MODULE = 'INSTALLED';
-        $setting->SETTING = 'TRUE';
+        $setting->MODULE = 'SETTINGS';
+        $setting->SETTING = 'INSTALLED';
+        $setting->VALUE = 'TRUE';
         $setting->create();
         unset ($setting);
     }
