@@ -145,7 +145,7 @@ abstract class AbstractBaseModel implements InputFilterAwareInterface
         $sql = new Sql($this->adapter);
         
         $select = new Select();
-        $select->from($this->table);
+        $select->from($this->getTableName());
         $select->where($predicate);
         $select->order($order);
         
@@ -174,7 +174,7 @@ abstract class AbstractBaseModel implements InputFilterAwareInterface
         $values = $this->getArrayCopy();
         
         $insert = new Insert();
-        $insert->into($this->table);
+        $insert->into($this->getTableName());
         $insert->values($values);
         
         $statement = $sql->prepareStatementForSqlObject($insert);
@@ -192,7 +192,7 @@ abstract class AbstractBaseModel implements InputFilterAwareInterface
         $sql = new Sql($this->adapter);
         
         $select = new Select();
-        $select->from($this->table);
+        $select->from($this->getTableName());
         $select->where($criteria);
         
         $statement = $sql->prepareStatementForSqlObject($select);
@@ -220,7 +220,7 @@ abstract class AbstractBaseModel implements InputFilterAwareInterface
         $values = $this->getArrayCopy();
         
         $update = new Update();
-        $update->table($this->table);
+        $update->table($this->getTableName());
         $update->set($values);
         $update->where([$this->primary_key => $values[$this->primary_key]]);
         
@@ -241,7 +241,7 @@ abstract class AbstractBaseModel implements InputFilterAwareInterface
         $sql = new Sql($this->adapter);
         
         $delete = new Delete();
-        $delete->from($this->table)->where(array($prikey => $this->$prikey));
+        $delete->from($this->getTableName())->where(array($prikey => $this->$prikey));
         $statement = $sql->prepareStatementForSqlObject($delete);
         
         try {
