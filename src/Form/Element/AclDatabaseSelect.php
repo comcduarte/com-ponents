@@ -76,6 +76,10 @@ class AclDatabaseSelect extends DatabaseSelect
             $this->setAclService($options['acl_service']);
         }
         
+        if (isset($options['acl_resource_column'])) {
+            $this->setAclResourceField($options['acl_resource_column']);
+        }
+        
         parent::setOptions($options);
 
         return $this;
