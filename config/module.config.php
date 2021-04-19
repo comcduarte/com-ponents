@@ -14,6 +14,14 @@ return [
             AclDatabaseSelect::class => InvokableFactory::class,
         ],
     ],
+    'view_helpers' => [
+        'factories' => [
+            Components\Form\View\Helper\bsFormSelectButtonRow::class => InvokableFactory::class,
+        ],
+        'aliases' => [
+            'bsFormSelectButtonRow' => Components\Form\View\Helper\bsFormSelectButtonRow::class,
+        ],
+    ],
     'view_manager' => [
         'template_map' => [
             'base/index' => __DIR__ . '/../view/components/base-views/index.phtml',
@@ -23,6 +31,8 @@ return [
             'base/config' => __DIR__ . '/../view/components/base-views/config.phtml',
             'base/subtable' => __DIR__ . '/../view/components/base-views/subtable.phtml',
             'base/subform' => __DIR__ . '/../view/components/base-views/subform.phtml',
+            
+            'bsFormSelectButton'      => __DIR__ . '/../view/components/bs-form-views/bsFormSelectButton.phtml',
         ],
         'template_path_stack' => [
             __DIR__ . '/../view',
