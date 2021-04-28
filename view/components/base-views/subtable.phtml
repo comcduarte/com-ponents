@@ -16,7 +16,7 @@
         	<thead>
         		<tr>
         	<?php 
-        	   $header = array_keys($this->data[0]); 
+        	   $header = array_keys(array_values($this->data)[0]); 
         	   foreach ($header as $key) {
         	       if (strpos($key, $this->primary_key) === 0 ) { continue; }
         	       echo "<th>$key</th>";
