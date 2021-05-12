@@ -17,9 +17,11 @@ return [
     'view_helpers' => [
         'factories' => [
             Components\Form\View\Helper\bsFormSelectButtonRow::class => InvokableFactory::class,
+            Components\Form\View\Helper\FormTreeview::class => InvokableFactory::class,
         ],
         'aliases' => [
             'bsFormSelectButtonRow' => Components\Form\View\Helper\bsFormSelectButtonRow::class,
+            'formTreeview' => Components\Form\View\Helper\FormTreeview::class,
         ],
     ],
     'view_manager' => [
