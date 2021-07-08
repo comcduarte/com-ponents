@@ -58,8 +58,15 @@ class DatabaseSelect extends Select
             return $e;
         }
         
+        /**
+         * Compatibility Feature 
+         * If forms don't utilize empty_option, continue to use hard coded value, until all modules upgraded. 
+         */
+        
         $options = [];
-        $options[NULL] = '--- Unassigned ---';
+        if (!isset($this->emptyOption)) {
+            $options[NULL] = '--- Unassigned ---';
+        }
         foreach ($resultSet as $object) {
             $id = $object[$this->database_id_column];
             array_shift($object);
