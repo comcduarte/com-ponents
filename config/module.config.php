@@ -1,6 +1,7 @@
 <?php
 
 use Components\Form\Element\AclDatabaseSelect;
+use Components\Form\View\Helper\Factory\FormTreeviewFactory;
 use Laminas\ServiceManager\Factory\InvokableFactory;
 
 return [
@@ -17,11 +18,12 @@ return [
     'view_helpers' => [
         'factories' => [
             Components\Form\View\Helper\bsFormSelectButtonRow::class => InvokableFactory::class,
-            Components\Form\View\Helper\FormTreeview::class => InvokableFactory::class,
+            Components\Form\View\Helper\FormTreeview::class => FormTreeviewFactory::class,
         ],
         'aliases' => [
             'bsFormSelectButtonRow' => Components\Form\View\Helper\bsFormSelectButtonRow::class,
             'formTreeview' => Components\Form\View\Helper\FormTreeview::class,
+            
         ],
     ],
     'view_manager' => [

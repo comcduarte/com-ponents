@@ -33,7 +33,7 @@ class FormTreeview extends AbstractHelper
     {
         $rendered = $this->renderStyle();
         
-        $ai = new \RecursiveArrayIterator($element->getOption('data'));
+        $ai = new \RecursiveArrayIterator($element->getData());
         $ti = new \RecursiveTreeIterator($ai);
         
         $current_depth = 0;
@@ -67,47 +67,31 @@ class FormTreeview extends AbstractHelper
             
             if ($ti->callHasChildren()) {
                 //-- Render Branch --//
-                $html .= "<li><span class='$this->class'><i class='fas fa-caret-right'></i>" . $key . '</span>';
+                $html .= $this->renderBranch($key);
             } else {
                 //-- Render Leaves --//
-                $html .= '<li>' . $value;
+                $html .= $this->renderLeaves($value);
             }
             
             $previous_depth = $current_depth;
         }
         
         $rendered .= $html;
-        
-//         $rendered = '
-//             <ul id="myUL">
-//                 <li>Beer</span>
-//                 <li>Wine</span>
-//               <li><span class="asdf"><i class="fas fa-caret-right"></i>Beverages</span>
-//                 <ul class="nested">
-//                   <li>Water</li>
-//                   <li>Coffee</li>
-//                   <li><span class="asdf"><i class="fas fa-caret-right"></i>Tea</span>
-//                     <ul class="nested">
-//                       <li>Black Tea</li>
-//                       <li>White Tea</li>
-//                       <li><span class="asdf"><i class="fas fa-caret-right"></i>Green Tea</span>
-//                         <ul class="nested">
-//                           <li>Sencha</li>
-//                           <li>Gyokuro</li>
-//                           <li>Matcha</li>
-//                           <li>Pi Lo Chun</li>
-//                         </ul>
-//                       </li>
-//                     </ul>
-//                   </li>
-//                 </ul>
-//               </li>
-//             </ul>
-//         ';
-        
         $rendered .= $this->renderScript();
         
         return $rendered;
+    }
+    
+    private function renderBranch($key)
+    {
+        $html = "<li><span class='$this->class'><i class='fas fa-caret-right'></i>" . $key . '</span>';
+        return $html;
+    }
+    
+    private function renderLeaves($value)
+    {
+        $html = '<li>' . $value;
+        return $html;
     }
     
     private function renderStyle()
