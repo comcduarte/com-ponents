@@ -40,7 +40,7 @@ class AclDatabaseSelect extends DatabaseSelect
         array_unshift($columns, $this->database_id_column);
         $this->database_object->columns($columns);
         
-        $this->database_object->order(next($columns));
+        $this->database_object->order(current($this->database_value_columns));
 
         
         $statement = $sql->prepareStatementForSqlObject($this->database_object);
