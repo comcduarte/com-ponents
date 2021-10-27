@@ -30,6 +30,7 @@ abstract class AbstractBaseModel implements InputFilterAwareInterface
     protected $public_attributes;
     protected $primary_key;
     protected $required;
+    protected $select;
     
     public $UUID;
     public $STATUS;
@@ -49,11 +50,12 @@ abstract class AbstractBaseModel implements InputFilterAwareInterface
             'primary_key',
             'required',
             'current_user',
+            'select',
         ];
         $this->UUID = $this->generate_uuid();
         $this->setPrimaryKey('UUID');
         
-        $date = new \DateTime('now',new \DateTimeZone('EDT'));
+        $date = new \DateTime('now',new \DateTimeZone('UTC'));
         $today = $date->format('Y-m-d H:i:s');
         $this->DATE_CREATED = $today;
         
@@ -144,7 +146,7 @@ abstract class AbstractBaseModel implements InputFilterAwareInterface
         
         $sql = new Sql($this->adapter);
         
-        $select = new Select();
+        $select = $this->getSelect();
         $select->from($this->getTableName());
         $select->where($predicate);
         $select->order($order);
@@ -163,7 +165,7 @@ abstract class AbstractBaseModel implements InputFilterAwareInterface
     
     public function create()
     {
-        $date = new \DateTime('now',new \DateTimeZone('EDT'));
+        $date = new \DateTime('now',new \DateTimeZone('UTC'));
         $this->DATE_CREATED = $date->format('Y-m-d H:i:s');
         
         if (is_null($this->UUID)) {
@@ -213,7 +215,7 @@ abstract class AbstractBaseModel implements InputFilterAwareInterface
     
     public function update()
     {
-        $date = new \DateTime('now',new \DateTimeZone('EDT'));
+        $date = new \DateTime('now',new \DateTimeZone('UTC'));
         $this->DATE_MODIFIED = $date->format('Y-m-d H:i:s');
         
         $sql = new Sql($this->adapter);
@@ -260,4 +262,24 @@ abstract class AbstractBaseModel implements InputFilterAwareInterface
             mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535)
             );
     }
+    
+    /**
+     * @return \Laminas\Db\Sql\Select
+     */
+    public function getSelect()
+    {
+        if (!is_a($this->select, Select::class)) {
+            $this->select = new Select();
+        }
+        return $this->select;
+    }
+
+    /**
+     * @param Select $select
+     */
+    public function setSelect(Select $select)
+    {
+        $this->select = $select;
+    }
+
 }

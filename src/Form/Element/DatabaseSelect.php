@@ -47,7 +47,7 @@ class DatabaseSelect extends Select
                 $this->database_object->columns($columns);
                 
                 /** ORDER BY the first value column **/
-                $this->database_object->order(next($columns));
+                $this->database_object->order(current($this->database_value_columns));
         }
         
         $statement = $sql->prepareStatementForSqlObject($this->database_object);
@@ -58,8 +58,15 @@ class DatabaseSelect extends Select
             return $e;
         }
         
+        /**
+         * Compatibility Feature 
+         * If forms don't utilize empty_option, continue to use hard coded value, until all modules upgraded. 
+         */
+        
         $options = [];
-        $options[NULL] = '--- Unassigned ---';
+        if (!isset($this->emptyOption)) {
+            $options[NULL] = '--- Unassigned ---';
+        }
         foreach ($resultSet as $object) {
             $id = $object[$this->database_id_column];
             array_shift($object);

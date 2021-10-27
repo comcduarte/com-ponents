@@ -25,7 +25,12 @@ abstract class AbstractBaseController extends AbstractActionController
             $header = array_keys($records[0]);
         }
         
+        $route = $this->getEvent()->getRouteMatch()->getMatchedRouteName();
+        $params = $this->getEvent()->getRouteMatch()->getParams();
+        
         $view->setvariables ([
+            'route' => $route,
+            'params' => $params,
             'data' => $records,
             'header' => $header,
             'primary_key' => $this->model->getPrimaryKey(),
@@ -63,8 +68,12 @@ abstract class AbstractBaseController extends AbstractActionController
             }
             
             $route = $this->getEvent()->getRouteMatch()->getMatchedRouteName();
-            $primary_key = $this->model->getPrimaryKey();
-            return $this->redirect()->toRoute($route, ['action' => 'update', 'uuid' => $this->model->UUID]);
+            $params = array_merge(
+                $this->getEvent()->getRouteMatch()->getParams(),
+                ['action' => 'update', 'uuid' => $this->model->UUID]
+                );
+            
+            return $this->redirect()->toRoute($route, $params);
         }
         
         $view->setVariables([
@@ -144,7 +153,12 @@ abstract class AbstractBaseController extends AbstractActionController
             }
             
             $route = $this->getEvent()->getRouteMatch()->getMatchedRouteName();
-            return $this->redirect()->toRoute($route, ['action' => 'index']);
+            $params = array_merge(
+                $this->getEvent()->getRouteMatch()->getParams(),
+                ['action' => 'index']
+                );
+            
+            return $this->redirect()->toRoute($route, $params);
         }
         
         
