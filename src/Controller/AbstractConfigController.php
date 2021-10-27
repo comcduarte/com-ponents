@@ -21,6 +21,7 @@ abstract class AbstractConfigController extends AbstractActionController
     use AdapterAwareTrait;
     
     private $route;
+    private $config;
     
     public function indexAction()
     {
@@ -145,6 +146,22 @@ abstract class AbstractConfigController extends AbstractActionController
     {
         $this->route = $route;
         return $this;
+    }
+    
+    /**
+     * @return mixed
+     */
+    public function getConfig()
+    {
+        return $this->config;
+    }
+    
+    /**
+     * @param mixed $config
+     */
+    public function setConfig($config)
+    {
+        $this->config = $config;
     }
     
     abstract public function createDatabase();
