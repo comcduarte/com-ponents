@@ -1,0 +1,18 @@
+{
+	"name" : "comcduarte/com-ponents",
+	"authors" : [{
+			"name" : "Christopher Duarte",
+			"email" : "christopher.duarte@middletownct.gov",
+			"role" : "Software Engineer"
+		}
+	],
+	"require" : {
+		"laminas/laminas-db" : "~2.13",
+		"laminas/laminas-form" : "~3.0"
+	},
+	"autoload" : {
+		"psr-4" : {
+			"Components\\" : "module/Components/src"
+		}
+	}
+}
