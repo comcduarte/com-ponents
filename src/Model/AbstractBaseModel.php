@@ -55,7 +55,7 @@ abstract class AbstractBaseModel implements InputFilterAwareInterface
         $this->UUID = $this->generate_uuid();
         $this->setPrimaryKey('UUID');
         
-        $date = new \DateTime('now',new \DateTimeZone('EDT'));
+        $date = new \DateTime('now',new \DateTimeZone('UTC'));
         $today = $date->format('Y-m-d H:i:s');
         $this->DATE_CREATED = $today;
         
@@ -165,7 +165,7 @@ abstract class AbstractBaseModel implements InputFilterAwareInterface
     
     public function create()
     {
-        $date = new \DateTime('now',new \DateTimeZone('EDT'));
+        $date = new \DateTime('now',new \DateTimeZone('UTC'));
         $this->DATE_CREATED = $date->format('Y-m-d H:i:s');
         
         if (is_null($this->UUID)) {
@@ -215,7 +215,7 @@ abstract class AbstractBaseModel implements InputFilterAwareInterface
     
     public function update()
     {
-        $date = new \DateTime('now',new \DateTimeZone('EDT'));
+        $date = new \DateTime('now',new \DateTimeZone('UTC'));
         $this->DATE_MODIFIED = $date->format('Y-m-d H:i:s');
         
         $sql = new Sql($this->adapter);

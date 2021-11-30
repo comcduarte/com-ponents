@@ -47,7 +47,7 @@ class DatabaseSelect extends Select
                 $this->database_object->columns($columns);
                 
                 /** ORDER BY the first value column **/
-                $this->database_object->order(next($columns));
+                $this->database_object->order(current($this->database_value_columns));
         }
         
         $statement = $sql->prepareStatementForSqlObject($this->database_object);
