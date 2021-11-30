@@ -12,7 +12,7 @@
 	},
 	"autoload" : {
 		"psr-4" : {
-			"Components\\" : "module/Components/src"
+			"Comcduarte\\Components\\" : "src/"
 		}
 	},
 	"license" : "BSD-3-Clause"
