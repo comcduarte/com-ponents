@@ -33,6 +33,9 @@ return [
             'base/subform' => __DIR__ . '/../view/components/base-views/subform.phtml',
             
             'bsFormSelectButton'      => __DIR__ . '/../view/components/bs-form-views/bsFormSelectButton.phtml',
+            
+            'flashmessenger'    => __DIR__ . '/../view/components/partials/flashmessenger.phtml',
+            'navigation'        => __DIR__ . '/../view/components/partials/navigation.phtml',
         ],
         'template_path_stack' => [
             __DIR__ . '/../view',
