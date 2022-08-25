@@ -26,8 +26,8 @@ abstract class AbstractBaseModel implements InputFilterAwareInterface
     
     protected $table;
     protected $inputFilter;
-    protected $private_attributes;
-    protected $public_attributes;
+    protected $private_attributes = [];
+    protected $public_attributes = [];
     protected $primary_key;
     protected $required;
     protected $select;
@@ -41,7 +41,7 @@ abstract class AbstractBaseModel implements InputFilterAwareInterface
     {
         $this->setDbAdapter($adapter);
         
-        $this->private_attributes = [
+        array_push($this->private_attributes,
             'adapter',                  //-- From AdapterAwareTrait --//
             'table',
             'inputFilter',
@@ -51,7 +51,7 @@ abstract class AbstractBaseModel implements InputFilterAwareInterface
             'required',
             'current_user',
             'select',
-        ];
+        );
         $this->UUID = $this->generate_uuid();
         $this->setPrimaryKey('UUID');
         
