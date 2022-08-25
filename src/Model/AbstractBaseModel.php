@@ -67,7 +67,9 @@ abstract class AbstractBaseModel implements InputFilterAwareInterface
     public function exchangeArray($data)
     {
         foreach ($this->public_attributes as $var) {
-            $this->$var = (!empty($data[$var])) ? $data[$var] : null;
+            if (!empty($data[$var])) {
+                $this->$var = $data[$var];
+            }
         }
     }
     
