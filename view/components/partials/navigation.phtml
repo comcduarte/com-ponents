@@ -119,10 +119,10 @@ foreach ($iterator as $page) {
     $parent = $page->getParent();
 
     if ($page->hasPages() && $depth == 0) {
-        $aClass = ' class="nav-link dropdown-toggle" data-toggle="dropdown"';
+        $aClass = ' class="nav-link dropdown-toggle" data-bs-toggle="dropdown"';
         $caret = '<b class="caret"></b>';
     } elseif ($page->hasPages() && $depth > 0) {
-        $aClass = ' class="dropdown-item dropdown-toggle" data-toggle="dropdown"';
+        $aClass = ' class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown"';
         $caret = '<b class="caret"></b>';
     } elseif (! $page->hasPages() && $depth > 0) {
         $aClass = ' class="dropdown-item"';
