@@ -1,23 +1,30 @@
 <?php $table_id = strval(random_int(0, 999999)); ?>
 <script type="text/javascript">
 function searchTable() {
-	  var input, filter, table, tr, td, i, txtValue;
-	  input = document.getElementById("search");
-	  filter = input.value.toUpperCase();
-	  table = document.getElementById("<?=$table_id?>");
-	  tr = table.getElementsByTagName("tr");
-	  for (i = 0; i < tr.length; i++) {
-	    td = tr[i].getElementsByTagName("td")[0];
-	    if (td) {
-	      txtValue = td.textContent || td.innerText;
-	      if (txtValue.toUpperCase().indexOf(filter) > -1) {
-	        tr[i].style.display = "";
-	      } else {
-	        tr[i].style.display = "none";
-	      }
-	    }       
-	  }
-	}
+    var input, filter, table, tr, td, i, z, negate, txtValue;
+    input = document.getElementById("search");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("<?=$table_id?>");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+		z = 0;
+		
+		do {
+			td = tr[i].getElementsByTagName("td")[z];
+			if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                	tr[i].style.display = "";
+                	break;
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }    
+            z++;
+		} while (z <= 3);
+    }
+    // Only queries the last column
+}
 
 function sortTable(n) {
   var loader, table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
