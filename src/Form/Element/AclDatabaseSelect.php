@@ -52,7 +52,6 @@ class AclDatabaseSelect extends DatabaseSelect
         }
         
         $options = [];
-        $options[NULL] = '--- Unassigned ---';
         foreach ($resultSet as $object) {
             $id = $object[$this->database_id_column];
             array_shift($object);
