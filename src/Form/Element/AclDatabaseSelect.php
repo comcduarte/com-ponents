@@ -4,7 +4,7 @@ namespace Components\Form\Element;
 use Laminas\Db\Sql\Sql;
 use Laminas\Db\Sql\Select as SqlSelect;
 use Exception;
-use Components\Traits\AclAwareTrait;
+use Acl\Traits\AclAwareTrait;
 
 class AclDatabaseSelect extends DatabaseSelect
 {
