@@ -30,7 +30,7 @@ abstract class AbstractBaseForm extends Form
             'type' => Select::class,
             'attributes' => [
                 'id' => 'STATUS',
-                'class' => 'form-control',
+                'class' => 'form-select',
                 'required' => 'true',
             ],
             'options' => [
