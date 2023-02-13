@@ -30,8 +30,8 @@ if (sizeof($data) === 0) {
                     	<i class="fas fa-bars"></i>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    	<a class="dropdown-item" href="<?=$this->url($this->indexViewRoute, ['action' => 'update', strtolower($this->primary_key) => $record[$this->primary_key]])?>">Update</a>
-                    	<a class="dropdown-item bg-danger text-white" href="<?=$this->url($this->indexViewRoute, ['action' => 'delete', strtolower($this->primary_key) => $record[$this->primary_key]])?>">Delete</a>
+                    	<a class="dropdown-item" href="<?=$this->url($this->indexViewRoute, ['action' => 'update', strtolower($this->primary_key) => $record[$this->primary_key]], true)?>">Update</a>
+                    	<a class="dropdown-item bg-danger text-white" href="<?=$this->url($this->indexViewRoute, ['action' => 'delete', strtolower($this->primary_key) => $record[$this->primary_key]], true)?>">Delete</a>
                     </div>
                 </div>
 			</td>
