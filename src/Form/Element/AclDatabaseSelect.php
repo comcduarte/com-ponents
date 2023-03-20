@@ -1,10 +1,10 @@
 <?php 
 namespace Components\Form\Element;
 
-use Laminas\Db\Sql\Sql;
+use Components\Traits\AclAwareTrait;
 use Laminas\Db\Sql\Select as SqlSelect;
+use Laminas\Db\Sql\Sql;
 use Exception;
-use Acl\Traits\AclAwareTrait;
 
 class AclDatabaseSelect extends DatabaseSelect
 {
