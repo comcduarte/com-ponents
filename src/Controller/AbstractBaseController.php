@@ -15,6 +15,8 @@ abstract class AbstractBaseController extends AbstractActionController
     
     public function indexAction()
     {
+        $this->getEventManager()->trigger('index.pre', $this, ['model' => $this->model, 'form' => $this->form]);
+        
         $view = new ViewModel();
         $view->setTemplate('base/index');
         
@@ -35,11 +37,16 @@ abstract class AbstractBaseController extends AbstractActionController
             'header' => $header,
             'primary_key' => $this->model->getPrimaryKey(),
         ]);
+        
+        $this->getEventManager()->trigger('index.post', $this, ['view' => $view]);
+        
         return $view;
     }
     
     public function createAction()
     {
+        $this->getEventManager()->trigger('create.pre', $this, ['model' => $this->model, 'form' => $this->form]);
+        
         $view = new ViewModel();
         $view->setTemplate('base/create');
         
@@ -73,6 +80,8 @@ abstract class AbstractBaseController extends AbstractActionController
                 ['action' => 'update', 'uuid' => $this->model->UUID]
                 );
             
+            $this->getEventManager()->trigger('create.post', $this, ['view' => $view]);
+            
             return $this->redirect()->toRoute($route, $params);
         }
         
@@ -81,11 +90,15 @@ abstract class AbstractBaseController extends AbstractActionController
             'title' => 'Add New Record',
         ]);
         
-        return ($view);
+        $this->getEventManager()->trigger('create.post', $this, ['view' => $view]);
+        
+        return $view;
     }
     
     public function updateAction()
     {
+        $this->getEventManager()->trigger('update.pre', $this, ['model' => $this->model, 'form' => $this->form]);
+        
         $primary_key = $this->params()->fromRoute(strtolower($this->model->getPrimaryKey()),0);
         if (!$primary_key) {
             $this->flashmessenger()->addErrorMessage("Unable to retrieve record. Value not passed.");
@@ -132,11 +145,15 @@ abstract class AbstractBaseController extends AbstractActionController
             'primary_key' => $this->model->getPrimaryKey(),
         ]);
         
+        $this->getEventManager()->trigger('update.post', $this, ['view' => $view]);
+        
         return ($view);
     }
     
     public function deleteAction()
     {
+        $this->getEventManager()->trigger('delete.pre', $this, ['model' => $this->model, 'form' => $this->form]);
+        
         $view = new ViewModel();
         $view->setTemplate('base/delete');
         
@@ -167,6 +184,9 @@ abstract class AbstractBaseController extends AbstractActionController
             'form' => $this->form,
             'primary_key' => $this->model->getPrimaryKey(),
         ]);
+        
+        $this->getEventManager()->trigger('delete.post', $this, ['view' => $view]);
+        
         return ($view);
     }
     
