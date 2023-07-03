@@ -169,20 +169,14 @@ abstract class AbstractBaseController extends AbstractActionController
                 $this->model->delete();
             }
             
-            $route = $this->getEvent()->getRouteMatch()->getMatchedRouteName();
-            $params = array_merge(
-                $this->getEvent()->getRouteMatch()->getParams(),
-                ['action' => 'index']
-                );
-            
-            return $this->redirect()->toRoute($route, $params);
+            return $this->redirect()->toUrl($request->getPost('referring_url'));
         }
-        
         
         $view->setVariables([
             'model', $this->model,
             'form' => $this->form,
             'primary_key' => $this->model->getPrimaryKey(),
+            'referring_url' => $this->getRequest()->getHeader('Referer')->getUri(),
         ]);
         
         $this->getEventManager()->trigger('delete.post', $this, ['view' => $view]);
