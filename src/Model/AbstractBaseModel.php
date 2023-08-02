@@ -64,10 +64,12 @@ abstract class AbstractBaseModel implements InputFilterAwareInterface
         $this->public_attributes = array_diff(array_keys(get_object_vars($this)), $this->private_attributes);
     }
     
-    public function exchangeArray($data)
+    public function exchangeArray($array)
     {
-        foreach ($this->public_attributes as $var) {
-            $this->$var = (!empty($data[$var])) ? $data[$var] : null;
+        foreach ($this->public_attributes as $key) {
+            if (isset($key, $array)) {
+                $this->$key = $array[$key];
+            }
         }
     }
     
