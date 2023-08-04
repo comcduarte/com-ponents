@@ -17,9 +17,11 @@ return [
     'view_helpers' => [
         'factories' => [
             Components\Form\View\Helper\bsFormSelectButtonRow::class => InvokableFactory::class,
+            Components\View\Helper\Subtable::class => InvokableFactory::class,
         ],
         'aliases' => [
             'bsFormSelectButtonRow' => Components\Form\View\Helper\bsFormSelectButtonRow::class,
+            'subtable' => Components\View\Helper\Subtable::class,
         ],
     ],
     'view_manager' => [
