@@ -125,7 +125,7 @@ function sortTable(n) {
 		<?php endif; ?>
 		<?php if (isset($this->help)) : ?>
 		<div>
-			<button type="button" class="btn btn-primary btn-sm" data-bs-toggle="popover" data-bs-title="<?=$this->help['TITLE']?>" data-bs-content="<?=$this->help['TEXT']?>"><?=$this->help['ICON']?></button>
+			<button type="button" class="btn btn-primary btn-sm" data-bs-toggle="popover" data-bs-title="<?=$this->help['TITLE']?>" data-bs-content="<?=$this->help['TEXT']?>"><?=$this->help($help['ICON'])?></button>
 		</div>
 		<?php endif; ?>
 	</div>
