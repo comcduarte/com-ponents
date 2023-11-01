@@ -61,7 +61,7 @@ abstract class AbstractBaseModel implements InputFilterAwareInterface
         
         $this->STATUS = $this::ACTIVE_STATUS;
         
-        $this->public_attributes = array_diff(array_keys(get_object_vars($this)), $this->private_attributes);
+        $this->setPublicAttributes();
     }
     
     public function exchangeArray($data)
@@ -282,4 +282,19 @@ abstract class AbstractBaseModel implements InputFilterAwareInterface
         $this->select = $select;
     }
 
+    /**
+     * Generates list of public attributes based on private attributes.
+     * @param array $attributes
+     * @return \Components\Model\AbstractBaseModel
+     */
+    public function setPublicAttributes(array $attributes = null)
+    {
+        $this->public_attributes = array_diff(array_keys(get_object_vars($this)), $this->private_attributes);
+
+        if (! is_null($attributes)) {
+            $this->public_attributes = $attributes;
+    
+            return $this;
+        }
+    }
 }
