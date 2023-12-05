@@ -2,19 +2,21 @@
 namespace Components\Controller;
 
 use Laminas\Db\Adapter\AdapterAwareTrait;
+use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Laminas\Db\Sql\Delete;
 use Laminas\Db\Sql\Sql;
 use Laminas\Db\Sql\Ddl\CreateTable;
 use Laminas\Db\Sql\Ddl\DropTable;
+use Laminas\Db\Sql\Ddl\SqlInterface;
 use Laminas\Db\Sql\Ddl\Column\Datetime;
 use Laminas\Db\Sql\Ddl\Column\Integer;
 use Laminas\Db\Sql\Ddl\Column\Varchar;
 use Laminas\Db\Sql\Ddl\Constraint\PrimaryKey;
 use Laminas\Mvc\Controller\AbstractActionController;
-use Laminas\View\Model\ViewModel;
-use Exception;
 use Laminas\Validator\Db\RecordExists;
+use Laminas\View\Model\ViewModel;
 use Settings\Model\SettingsModel;
+use Exception;
 
 abstract class AbstractConfigController extends AbstractActionController
 {
@@ -162,6 +164,27 @@ abstract class AbstractConfigController extends AbstractActionController
     public function setConfig($config)
     {
         $this->config = $config;
+    }
+    
+    public function addStandardFields(SqlInterface $ddl)
+    {
+        $ddl->addColumn(new Varchar('UUID', 36));
+        $ddl->addColumn(new Integer('STATUS', TRUE));
+        $ddl->addColumn(new Datetime('DATE_CREATED', TRUE));
+        $ddl->addColumn(new Datetime('DATE_MODIFIED', TRUE));
+        
+        return $ddl;
+    }
+    
+    public function processDdl($ddl)
+    {
+        $sql = new Sql($this->adapter);
+        try {
+            $this->adapter->query($sql->buildSqlString($ddl), $this->adapter::QUERY_MODE_EXECUTE);
+        } catch (InvalidQueryException $e) {
+            $this->flashMessenger()->addErrorMessage($e->getMessage());
+        }
+        return;
     }
     
     abstract public function createDatabase();
