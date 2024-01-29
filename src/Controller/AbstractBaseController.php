@@ -18,24 +18,39 @@ abstract class AbstractBaseController extends AbstractActionController
         $this->getEventManager()->trigger('index.pre', $this, ['model' => $this->model, 'form' => $this->form]);
         
         $view = new ViewModel();
-        $view->setTemplate('base/index');
+        $view->setTemplate('base/subtable');
         
-        $records = $this->model->fetchAll(new Where());
+        $data = $this->model->fetchAll(new Where());
+        
         $header = [];
-        
-        if (!empty($records)) {
-            $header = array_keys($records[0]);
+        if (!empty($data)) {
+            $header = array_keys($data[0]);
         }
         
         $route = $this->getEvent()->getRouteMatch()->getMatchedRouteName();
-        $params = $this->getEvent()->getRouteMatch()->getParams();
+        
+        $params = [
+            [
+                'route' => $route,
+                'action' => 'update',
+                'key' => 'UUID',
+                'label' => 'Update',
+            ],
+            [
+                'route' => $route,
+                'action' => 'delete',
+                'key' => 'UUID',
+                'label' => 'Delete',
+            ],
+        ];
         
         $view->setvariables ([
             'route' => $route,
             'params' => $params,
-            'data' => $records,
+            'data' => $data,
             'header' => $header,
             'primary_key' => $this->model->getPrimaryKey(),
+            'title' => 'Index',
         ]);
         
         $this->getEventManager()->trigger('index.post', $this, ['view' => $view]);
