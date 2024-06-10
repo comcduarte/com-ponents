@@ -32,6 +32,7 @@ return [
             'base/config'   => __DIR__ . '/../view/components/base-views/config.phtml',
             'base/subtable' => __DIR__ . '/../view/components/base-views/subtable.phtml',
             'base/subform'  => __DIR__ . '/../view/components/base-views/subform.phtml',
+            'base/modal'    => __DIR__ . '/../view/components/base-views/modal.phtml',
             
             'bsFormSelectButton'    => __DIR__ . '/../view/components/bs-form-views/bsFormSelectButton.phtml',
             
