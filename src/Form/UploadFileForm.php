@@ -31,7 +31,7 @@ class UploadFileForm extends Form
             'type' => Submit::class,
             'attributes' => [
                 'value' => 'Submit',
-                'class' => 'btn btn-primary',
+                'class' => 'btn btn-primary mt-2',
                 'id' => 'SUBMIT',
             ],
         ]);
