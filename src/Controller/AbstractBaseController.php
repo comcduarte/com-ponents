@@ -89,15 +89,10 @@ abstract class AbstractBaseController extends AbstractActionController
                 }
             }
             
-            $route = $this->getEvent()->getRouteMatch()->getMatchedRouteName();
-            $params = array_merge(
-                $this->getEvent()->getRouteMatch()->getParams(),
-                ['action' => 'update', 'uuid' => $this->model->UUID]
-                );
-            
             $this->getEventManager()->trigger('create.post', $this, ['view' => $view]);
             
-            return $this->redirect()->toRoute($route, $params);
+            $url = $this->getRequest()->getHeader('Referer')->getUri();
+            return $this->redirect()->toUrl($url);
         }
         
         $view->setVariables([
