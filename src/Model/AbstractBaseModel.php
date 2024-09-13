@@ -115,7 +115,8 @@ abstract class AbstractBaseModel implements InputFilterAwareInterface
     
     public function setInputFilter(InputFilterInterface $inputFilter)
     {
-        throw new Exception("Not Used");
+        $this->inputFilter = $inputFilter;
+        return $this;
     }
     
     public function getInputFilter()
