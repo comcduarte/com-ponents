@@ -2,7 +2,6 @@
 namespace Components\Controller;
 
 use Laminas\Db\Adapter\AdapterAwareTrait;
-use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Laminas\Db\Sql\Delete;
 use Laminas\Db\Sql\Sql;
 use Laminas\Db\Sql\Ddl\CreateTable;
@@ -181,7 +180,7 @@ abstract class AbstractConfigController extends AbstractActionController
         $sql = new Sql($this->adapter);
         try {
             $this->adapter->query($sql->buildSqlString($ddl), $this->adapter::QUERY_MODE_EXECUTE);
-        } catch (InvalidQueryException $e) {
+        } catch (\PDOException $e) {
             $this->flashMessenger()->addErrorMessage($e->getMessage());
         }
         return;
