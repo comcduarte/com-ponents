@@ -158,7 +158,7 @@ abstract class AbstractBaseModel implements InputFilterAwareInterface
             $results = $statement->execute();
             $resultSet->initialize($results);
         } catch (Exception $e) {
-            return FALSE;
+            return [];
         }
         
         return $resultSet->toArray();
